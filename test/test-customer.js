@@ -58,8 +58,23 @@ describe('Customers', () => {
     });
     it('should update a user and retain new values', (done) => {
         // customer has id? if so, update. if not, save new.
-
-
-        //done();
+        let newName = 'Diana Prince';
+        let data = ['wonder woman', 'diana@themyscira', 'themyscira', 'justice'];
+        let c1 = new Customer(...data);
+        c1.save()
+                .then((resultFromSave1) => {
+                    c1.name = newName;
+                    c1.save()
+                        .then((resultFromSave2) => {
+                            let customer_id = resultFromSave1.customer_id;
+                            Customer.get(customer_id)
+                                .then((c2) => {
+                                    expect(c2.name).to.equal(newName);
+                                     done();
+                                })
+                                .catch(console.log);
+                        })
+                })      
+         });
     });    
-});       
+       
